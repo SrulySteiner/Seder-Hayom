@@ -1,8 +1,8 @@
-# React + Vite
+# Seder-Hayom
+Repository for Seder Hayom, a daily planner app for CISC 4900 at Brooklyn College
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Seder Hayom is designed to be the ultimate daily planner for Judaism. The interface is user-friendly, and sports many useful features, all in an intuitive display. Seder Hayom's main feature is its automatic _Seder_-calculator and tracker, which utilizes the vast library of the Sefaria application to provide accurate information and easy access to improve your _Sedarim_. You can decide how much you want to learn of a specific _Sefer_ a day, by a number of metrics.
 
-Currently, two official plugins are available:
+For example, if you wanted to have a _Seder_ in _Gemarah Baba Kamma_, you can generate a _Seder_ of **1 hour a day of learning**, any number of **_daf(im)_ a day**, any number of **_amud(im)_ a day**, or pick a **date of completion**. Seder Hayom will instantly calculate and populate your daily schedule based on the metric you chose: If you chose a discrete **number of pages per day**, your daily schedules in the future will automatically contain that Seder as long as there are pages left for you to study. If you chose a **length of time**, your daily schedules will simply contain that Seder until you chose to terminate it. And if you chose a **date of completion**, Seder Hayom will work out how many pages you need to do a day to finish by then, and assign that number to your daily schedule until that date.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+To help you maintain your schedule, you will get a notification to complete your tasks if you set them with a specific time. Additionally, Seder Hayom will notify you in the evening, at a time of your choosing, to check off any daily tasks you might have missed. If you miss a day of your _Sedarim_, don't worry! The app will automatically reschedule your _Seder_ for the next day, pushing off the date of completion.
