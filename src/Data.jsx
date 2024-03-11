@@ -12,7 +12,6 @@ function dataComp() {
         const data = await response.json();
         setData(data);
         setLoading(false)
-        console.log(data)
       } catch (error) {
         setError(error);
         setLoading(false);
@@ -31,9 +30,9 @@ function dataComp() {
 
   return (
     <div>
-      {data.map((dataObj, index) => {
+      {data.map((index, dataObj) => {
           return (
-            <div
+            <div key = {index}
               style={{
                 width: "15em",
                 backgroundColor: "#35D841",
