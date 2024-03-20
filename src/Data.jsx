@@ -10,8 +10,9 @@ function dataComp() {
       try {
         const response = await fetch('https://www.sefaria.org/api/shape/Genesis');
         const data = await response.json();
-        setData(data);
-        setLoading(false)
+        setData(JSON.stringify(data));
+        setLoading(false);
+        console.log(data);
       } catch (error) {
         setError(error);
         setLoading(false);
@@ -29,10 +30,10 @@ function dataComp() {
   }
 
   return (
-    <div>
-      {data.map((index, dataObj) => {
+    /*<div>
+      {data.map((dataObj) => {
           return (
-            <div key = {index}
+            <div key = {dataObj.id}
               style={{
                 width: "15em",
                 backgroundColor: "#35D841",
@@ -45,6 +46,9 @@ function dataComp() {
             </div>
           );
         })}
+    </div>*/
+    <div>
+           <pre>{data}</pre>
     </div>
   );
 }

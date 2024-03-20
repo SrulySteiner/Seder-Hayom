@@ -3,7 +3,7 @@ import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import Data from './Data.jsx';
 
-function Seder(){
+function Sedarim({d, t}){
     return (
         <div>
             <Popup trigger=
@@ -29,4 +29,4 @@ function Seder(){
     )
 }
 
-export default Seder
+export default Sedarim
