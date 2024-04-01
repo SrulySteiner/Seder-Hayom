@@ -8,6 +8,7 @@ const Container  = styled.div`
   border: 1px solid lightgrey;
   border-radius: 2px;
   margin-bottom: 8px;
+  opacity: 1;
 `;
 const Title = styled.h3`
   padding: 8px;
@@ -23,7 +24,7 @@ function Tasks({d, t}) {
       localStorage.setItem("tasks", JSON.stringify(t.tasks));
     }, [t.tasks]);
     
-    const addTask = (event) => {
+    function addTask(event){
       event.preventDefault();
         const newTask = {
             id: crypto.randomUUID(),
@@ -39,14 +40,14 @@ function Tasks({d, t}) {
         });
     };
   
-    const removeTask = (taskId) => {
+    function removeTask(taskId) {
       const updatedTasks = t.tasks.filter(task => task.id !== taskId);
       t.setTasks(updatedTasks);
     };
   
     const filteredTasks = t.tasks.filter(task => task.date === d.currentDate.toLocaleDateString());
     
-    const onDragEnd = result =>{
+    const onDragEnd = (result) =>{
       const {destination, source, draggableId} = result;
       if(!destination){
         return;
@@ -73,24 +74,26 @@ function Tasks({d, t}) {
                     ref={provided.innerRef}
                     key = {1}
                   >
-                    {filteredTasks.map((task, index) => (
-                      <Draggable draggableId={task.id} index={index}>
-                        {(provided) => (
-                          <Container key = {task.id}
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <label>
-                              <input type="checkbox"/>
-                              <span>{task.name}</span>
-                              <button className="close-button" aria-label="Close alert" type="button" data-close onClick={() => removeTask(task.id)}>&times;</button>
-                            </label>
-                          </Container>
-                        )}
-                        
-                      </Draggable>
-                    ))}
+                    {filteredTasks.map((task, index) => {
+                      return (
+                        <Draggable draggableId={task.id} index={index}>
+                          {(provided) => (
+                            <Container key={task.id}
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <label>
+                                <input type="checkbox" />
+                                <span>{task.name}</span>
+                                <button className="close-button" aria-label="Close alert" type="button" data-close onClick={() => removeTask(task.id)}>&times;</button>
+                              </label>
+                            </Container>
+                          )}
+
+                        </Draggable>
+                      );
+                    })}
                     {provided.placeholder}
                   </TaskList>
                 )}
