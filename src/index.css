@@ -1,0 +1,23 @@
+.App{
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.App-header{
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+label {
+  color: black;
+  display: block;
+  margin-bottom: 8px
+}
+
+
+input:checked+span {
+  color: #777;
+  text-decoration: line-through;
+}
