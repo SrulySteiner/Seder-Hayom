@@ -30,7 +30,8 @@ function Tasks({d, t}) {
             id: crypto.randomUUID(),
           name: taskRef.current.value,
           date: d.currentDate.toLocaleDateString(),
-          isSeder: false
+          isSeder: false,
+          sederId: null
         };
         t.setTasks(() => {
           const newTasks = [...t.tasks, newTask];
@@ -86,7 +87,10 @@ function Tasks({d, t}) {
                               <label>
                                 <input type="checkbox" />
                                 <span>{task.name}</span>
-                                <button className="close-button" aria-label="Close alert" type="button" data-close onClick={() => removeTask(task.id)}>&times;</button>
+                                {!task.sederId &&
+                                  <button className="close-button" aria-label="Close alert" type="button" data-close onClick={() => removeTask(task.id)}>&times;</button>
+                                }
+                                
                               </label>
                             </Container>
                           )}
