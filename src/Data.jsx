@@ -35,14 +35,16 @@ function dataComp({d, t, s}) {
       setMetric(event.target.value);
       let totalLength = metric == index[0] ? length.length : length.reduce((a,b)=>a+b);
       let increment = Math.round(totalLength / daysBetween);
-      console.log(increment);
-      console.log(startDate);
-      console.log(endDate);
       setIncrement(increment);
     }else if(studyType == index[0]){
-      
+      setMetric(studyType);
+      setIncrement(event.target.value);
+      let newDate = new Date();
+      setEndDate(new Date(newDate.setDate(startDate.getDate() + Math.floor(length.length/increment) + 1)));
     }else{
-
+      setMetric(studyType);
+      setIncrement(event.target.value);
+      setEndDate(new Date(startDate.getDate() + Math.floor(length.reduce((a,b)=>a+b)/increment) + 1));
     }
   }
 
@@ -57,7 +59,6 @@ function dataComp({d, t, s}) {
       };
       s.setSeder(() => {
         const newSedarim = [...s.sedarim, newSeder];
-        //console.log(newSedarim);
         localStorage.setItem("sedarim", JSON.stringify(newSedarim));
         return newSedarim;
       });
@@ -119,7 +120,6 @@ function dataComp({d, t, s}) {
         const data = await response.json();
         setIndex(data.sectionNames);
         setMetric(index[0]);
-        //console.log(index);
         setLoading(false);
       } catch (error) {
         setError(error);
@@ -136,7 +136,6 @@ function dataComp({d, t, s}) {
         const response = await fetch(address);
         const data = await response.json();
         setLength(data[0].chapters);
-        //console.log(length);
         setLoading(false);
       } catch (error) {
         setError(error);
@@ -191,21 +190,24 @@ function dataComp({d, t, s}) {
     {(studyType == 'Date') ? 
       <div>
         <label > Pick Start and End:
-          <DatePicker
-            selectsStart
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            startDate={startDate}/>
-          <DatePicker
-            selectsEnd
-            selected={endDate}
-            onChange={(date) => setEndDate(date)}
-            endDate={endDate}
-            startDate={startDate}
-            minDate={startDate}/>
-        </label>
+          <div class="flex mb-4 items-center"> 
+            <DatePicker
+              selectsStart
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              startDate={startDate}/>
+            <DatePicker
+              selectsEnd
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              endDate={endDate}
+              startDate={startDate}
+              minDate={startDate}/>
+          </div>
+          </label>
         <label> Based on:
           <select onChange={changeIncrement}>
+            <option></option>
             {index.map((i) =>{
               return <option key={i}>
                       {i}
@@ -217,7 +219,7 @@ function dataComp({d, t, s}) {
        
      :
       <label>How many per day?
-        <input type="number" id="metric" name="metric" min="1" max={length.length} onChange={changeIncrement} />
+        <input type="number" id="metric" name="metric" min="1" max={length.length} defaultValue="0" onChange={changeIncrement}/>
       </label>  
     }
 

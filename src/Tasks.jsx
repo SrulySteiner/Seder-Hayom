@@ -2,20 +2,7 @@ import React, {useRef, useEffect} from 'react';
 import { DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import styled from 'styled-components';
 import './index.css';
-
-const Container  = styled.div`
-  margin: 8px;
-  border: 1px solid lightgrey;
-  border-radius: 2px;
-  margin-bottom: 8px;
-  opacity: 1;
-`;
-const Title = styled.h3`
-  padding: 8px;
-`;
-const TaskList = styled.div`
-  padding: 8px;
-`;
+import { Button } from "@material-tailwind/react";
 
 function Tasks({d, t}) {
     const taskRef = useRef(null);
@@ -31,6 +18,7 @@ function Tasks({d, t}) {
           name: taskRef.current.value,
           date: d.currentDate.toLocaleDateString(),
           isSeder: false,
+          completed: false,
           sederId: null
         };
         t.setTasks(() => {
@@ -62,15 +50,42 @@ function Tasks({d, t}) {
       nextTaskList.splice(source.index, 1);
       nextTaskList.splice(destination.index, 0,t.tasks.find(task => task.id === draggableId));
       t.setTasks(nextTaskList);
-    }   
+    }
+    
+    function toggleChecked (taskId) {
+      let newTasks = t.tasks.map(task =>{
+        if(task.id == taskId){
+          return {
+            ...task,
+          completed: !task.completed
+          }
+        }else{
+          return{
+            ...task
+          }
+        }
+      })
+      t.setTasks(newTasks);
+    }
 
   return (
-      <Container>
-          <Title>Tasks for {d.currentDate.toLocaleDateString()}:</Title>
-          <DragDropContext onDragEnd={onDragEnd}>
+    <div  class="h-100 w-full flex items-center justify-center bg-teal-lightest font-sans">
+      	<div class="bg-white rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg">
+      <div class="mb-4">
+          <h1 class="text-grey-darkest">Todo List</h1>
+          <div class="flex mt-4">
+            <form class ="flex mt-4"onSubmit={addTask}>
+              <input ref={taskRef} type="text" autoComplete="off" id="addtask" name="addtask" maxLength="50"
+              class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker" placeholder="Add Todo"/>
+              <button class="flex-no-shrink p-2 border-2 rounded text-teal border-teal hover:text-white hover:bg-teal">Add</button>
+            </form> 
+          </div>
+      </div>
+      <div class="flex">
+            <DragDropContext onDragEnd={onDragEnd}>
               <Droppable droppableId = {crypto.randomUUID()}>
                 {(provided) =>(
-                  <TaskList 
+                  <div 
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     key = {1}
@@ -79,38 +94,47 @@ function Tasks({d, t}) {
                       return (
                         <Draggable draggableId={task.id} index={index}>
                           {(provided) => (
-                            <Container key={task.id}
+                            <div class="flex mb-4 items-center" key={task.id}
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                             >
-                              <label>
-                                <input type="checkbox" />
-                                <span>{task.name}</span>
-                                {!task.sederId &&
-                                  <button className="close-button" aria-label="Close alert" type="button" data-close onClick={() => removeTask(task.id)}>&times;</button>
-                                }
-                                
-                              </label>
-                            </Container>
+                              {(!task.completed) ? 
+                              <>
+                               <p class="w-full text-grey-darkest">{task.name}</p>
+                               <button class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-green border-green hover:bg-green" onClick={() => toggleChecked(task.id)}>Done</button>
+                              {(!task.isSeder) ? 
+                                <button class="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-white hover:bg-red" aria-label="Close alert" type="button" data-close onClick={() => removeTask(task.id)}> Remove</button>
+                              : <></>
+                              } 
+                              </>
+                             :
+                             <>
+                             <p class="w-full line-through text-green">{task.name}</p>
+                             <button class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-grey border-grey hover:bg-grey" onClick={() => toggleChecked(task.id)}>Not Done</button>
+                            {(!task.isSeder) ? 
+                              <button class="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-white hover:bg-red" aria-label="Close alert" type="button" data-close onClick={() => removeTask(task.id)}> Remove</button>
+                            : <></>
+                            } 
+                            </>}
+                              
+                              
+                            </div>
                           )}
-
                         </Draggable>
                       );
                     })}
                     {provided.placeholder}
-                  </TaskList>
+                  </div>
                 )}
                 
               </Droppable>
-              
           </DragDropContext>
-            <form onSubmit={addTask}>
-              <input ref={taskRef} type="text" autoComplete="off" id="addtask" name="addtask" maxLength="50"></input>
-              <button type="submit">Add Task</button>
-            </form>
-      </Container>
+        </div>
+      </div> 
+    </div>                
   );
 }
 
 export default Tasks;
+
