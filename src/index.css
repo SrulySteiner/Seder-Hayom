@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .App{
   max-width: fit-content;
   margin-left: auto;
@@ -17,7 +21,26 @@ label {
 }
 
 
-input:checked+span {
+input:checked+p {
   color: #777;
   text-decoration: line-through;
+}
+
+.container {
+  width: 100%;
+  display: grid;
+  grid-template-areas: "sidebar main";
+  grid-template-columns: 200px auto;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  height: 100vw;
+  background-color: #0B3560;
+}
+
+.main {
+  grid-area: main;
+  height: 100vw;
+  background-color: rgb(255, 255, 255);
 }
