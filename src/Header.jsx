@@ -18,10 +18,10 @@ function Header({state}){
 
     return(
         <header className="App-header">
-        <h1>Seder Hayom</h1>
+        <h1 class="text-3xl font-mono">Seder Hayom</h1>
         <div>
           <div className="App-header">
-            <button onClick={handleToday}>Today</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"onClick={handleToday}>Today</button>
           </div >
           <div className="App-header">
             <button onClick={() => changeDate('prev')}>&lt;</button>

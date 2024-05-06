@@ -34,22 +34,24 @@ function Tasks({d, t}) {
       t.setTasks(updatedTasks);
     };
   
-    const filteredTasks = t.tasks.filter(task => task.date === d.currentDate.toLocaleDateString());
+    let filteredTasks = t.tasks.filter(task => task.date === d.currentDate.toLocaleDateString());
     
-    const onDragEnd = (result) =>{
-      const {destination, source, draggableId} = result;
-      if(!destination){
+    function onDragEnd (result){
+      if(!result.destination){
         return;
       }
 
-      if(destination.droppableId === source.droppableId &&
-        destination.index === source.index){
+      if(result.destination.droppableId === result.source.droppableId &&
+        result.destination.index === result.source.index){
           return;
-        }
-      const nextTaskList = [...t.tasks];
-      nextTaskList.splice(source.index, 1);
-      nextTaskList.splice(destination.index, 0,t.tasks.find(task => task.id === draggableId));
-      t.setTasks(nextTaskList);
+      }
+
+      let newTasks = [...filteredTasks];
+      const [removed] = newTasks.splice(result.source.index, 1);
+      newTasks.splice(result.destination.index, 0, removed);
+      filteredTasks = [...newTasks];
+      newTasks = t.tasks.filter(task => task.date != d.currentDate.toLocaleDateString());
+      t.setTasks(newTasks.concat(filteredTasks));
     }
     
     function toggleChecked (taskId) {
@@ -75,7 +77,7 @@ function Tasks({d, t}) {
           <h1 class="text-grey-darkest">Todo List</h1>
           <div class="flex mt-4">
             <form class ="flex mt-4"onSubmit={addTask}>
-              <input ref={taskRef} type="text" autoComplete="off" id="addtask" name="addtask" maxLength="50"
+              <input ref={taskRef} type="text" autoComplete="off" id="addtask" name="addtask" maxLength="40"
               class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker" placeholder="Add Todo"/>
               <button class="flex-no-shrink p-2 border-2 rounded text-teal border-teal hover:text-white hover:bg-teal">Add</button>
             </form> 
@@ -83,18 +85,18 @@ function Tasks({d, t}) {
       </div>
       <div class="flex">
             <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId = {crypto.randomUUID()}>
-                {(provided) =>(
+              <Droppable droppableId={crypto.randomUUID()}>
+                {(provided, snapshot) =>(
                   <div 
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    key = {1}
+                    key={crypto.randomUUID()}
                   >
-                    {filteredTasks.map((task, index) => {
-                      return (
+                    {filteredTasks.map((task, index) => (
                         <Draggable draggableId={task.id} index={index}>
-                          {(provided) => (
-                            <div class="flex mb-4 items-center" key={task.id}
+                          {(provided, snapshot) => (
+                            <div class="flex mb-4 items-center" 
+                              key={task.id}
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
@@ -122,8 +124,7 @@ function Tasks({d, t}) {
                             </div>
                           )}
                         </Draggable>
-                      );
-                    })}
+                      ))}
                     {provided.placeholder}
                   </div>
                 )}

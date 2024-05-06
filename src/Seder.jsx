@@ -22,39 +22,40 @@ function Sedarim({d, t}){
       };
 
     return (
-        <div>
-            {sedarim.map((seder) => {
+        <div class="h-100 w-full flex grid items-center justify-center bg-teal-lightest font-sans">
+            <div class="flex grid flex-col space-y-4">
+                {sedarim.map((seder) => {
                       return (
-                        <div key={seder.id}> 
-                              <label>
-                                <input type="checkbox" />
-                                <span>{seder.name}</span>
-                                <button className="close-button" aria-label="Close alert" type="button" data-close onClick={() => removeSeder(seder.id)}>&times;</button>
-                              </label>
+                        <div class="flex flex-row justify-between" key={seder.id}> 
+                                <p class="text-white">{seder.name}</p>
+                                <button class="bg-white flex-no-shrink p-2 ml-2 border-1 rounded text-black border-red opacity-100 hover:outline outline-blue-500" aria-label="Close alert" type="button" onClick={() => removeSeder(seder.id)}>Delete</button>
                         </div>
                           );
                     })}
-            <Popup trigger=
-                {<button> Create Seder </button>} 
-                modal nested>
-                {
-                    close => (
-                        <div className='modal'>
-                            <div className='content'>
-                                <Data d = {d}
-                                      t = {t}
-                                      s = {{sedarim, setSeder}}/>
+            </div>
+            <div class="absolute bottom-0">
+                <Popup class="flex-grow" trigger=
+                    {<button class="bg-white-500 flex-no-shrink p-2 ml-2 border-1 rounded text-white border-red opacity-100 hover:text-black hover:bg-white" aria-label="Close alert">+ Create Seder </button>} 
+                    modal nested>
+                    {
+                        close => (
+                            <div className='modal'>
+                                <div className='content'>
+                                    <Data d = {d}
+                                        t = {t}
+                                        s = {{sedarim, setSeder}}/>
+                                </div>
+                                <div>
+                                    <button onClick=
+                                        {() => close()}>
+                                            Close
+                                    </button>
+                                </div>
                             </div>
-                            <div>
-                                <button onClick=
-                                    {() => close()}>
-                                        Close
-                                </button>
-                            </div>
-                        </div>
-                    )
-                }
-            </Popup>
+                        )
+                    }
+                </Popup>
+            </div>
         </div>
     )
 }
