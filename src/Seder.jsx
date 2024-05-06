@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
+//import 'reactjs-popup/dist/index.css';
 import Data from './Data.jsx';
 
 const getIntitalState = () =>{
