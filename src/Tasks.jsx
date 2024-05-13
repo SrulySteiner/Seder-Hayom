@@ -1,7 +1,6 @@
 import React, {useRef, useEffect} from 'react';
 import { DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import './index.css';
-import Check from './assets/green-checkmark-icon.svg';
 
 function Tasks({d, t}) {
     const taskRef = useRef(null);
