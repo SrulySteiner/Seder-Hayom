@@ -154,7 +154,7 @@ function dataComp({d, t, s}) {
   }
 
   return (
-   <div>
+   <div class="flex flex-col flex-row items-center justify-center">
     <label>Pick a Category:
       <select onChange={changeCategory}>
         {categories.map((c, index) =>{
@@ -222,8 +222,7 @@ function dataComp({d, t, s}) {
         <input type="number" id="metric" name="metric" min="1" max={length.length} defaultValue="0" onChange={changeIncrement}/>
       </label>  
     }
-
-      <button onClick={() => createSeder()}>Create Seder</button>
+      <button class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-grey border-grey hover:bg-grey"onClick={() => createSeder()}>Create Seder</button>
    </div>
     );
 }
