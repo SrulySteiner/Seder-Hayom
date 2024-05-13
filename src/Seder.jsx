@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import Popup from '../node_modules/.vite/deps/reactjs-popup.js';
+import Popup from 'reactjs-popup';
 //import 'reactjs-popup/dist/index.css';
 import Data from './Data.jsx';
 
