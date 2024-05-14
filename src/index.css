@@ -50,8 +50,8 @@ input:checked+p {
   margin: auto;
   background: rgb(255, 255, 255);
   height: 50%;
-  width: 60%;
-  padding: 5px;
+  width:fit-content;
+  padding: 10px;
 }
 .popup-arrow {
   color: rgb(255, 255, 255);

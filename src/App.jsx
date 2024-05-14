@@ -30,7 +30,7 @@ function App() {
         </div>
             
       </div>
-      <div class="h-10">
+      <div class="flex flex-row justify-center">
         <Footer/>
       </div>  
     </div>

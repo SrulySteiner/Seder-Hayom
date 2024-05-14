@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+function addDays(date, days){
+  const newDate = new Date(date);
+  newDate.setDate(date.getDate() + days);
+  return newDate;
+}
+
 function dataComp({d, t, s}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -12,7 +18,7 @@ function dataComp({d, t, s}) {
   const [length, setLength] = useState([]);
   const [studyType, setStudyType] = useState('Date');
   const [metric, setMetric] = useState();
-  const [increment, setIncrement] = useState();
+  const [increment, setIncrement] = useState(1);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
@@ -32,19 +38,20 @@ function dataComp({d, t, s}) {
   const changeIncrement = (event) =>{
     if(studyType == 'Date'){
       let daysBetween = Math.round((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+      let totalLength = event.target.value == index[0] ? length.length : length.reduce((a,b)=>a+b);
+      let increment = Math.ceil(totalLength / daysBetween);
       setMetric(event.target.value);
-      let totalLength = metric == index[0] ? length.length : length.reduce((a,b)=>a+b);
-      let increment = Math.round(totalLength / daysBetween);
       setIncrement(increment);
     }else if(studyType == index[0]){
       setMetric(studyType);
-      setIncrement(event.target.value);
-      let newDate = new Date();
-      setEndDate(new Date(newDate.setDate(startDate.getDate() + Math.floor(length.length/increment) + 1)));
+      setIncrement(event.target.valueAsNumber);
+      let daysBetween = Math.ceil(length.length / increment);
+      setEndDate(addDays(startDate, daysBetween));
     }else{
       setMetric(studyType);
-      setIncrement(event.target.value);
-      setEndDate(new Date(startDate.getDate() + Math.floor(length.reduce((a,b)=>a+b)/increment) + 1));
+      setIncrement(event.target.valueAsNumber);
+      let daysBetween = Math.ceil(length.reduce((a,b) =>a+b) / increment);
+      setEndDate(addDays(startDate, daysBetween));
     }
   }
 
@@ -71,8 +78,8 @@ function dataComp({d, t, s}) {
       console.log(totalLength);
       let dayStart = 1;
       let dayEnd = dayStart + increment - 1;
-      totalLength -= increment;
-      while (loop.getDate() <= endDate.getDate()) {
+      while (loop.getDate() <= endDate.getDate() && dayStart <= totalLength) {
+        console.log(dayEnd);
         let newTask = {
           id: crypto.randomUUID(),
           name: newSeder.name + ' ' + metric + ' ' + dayStart + '-' + dayEnd,
@@ -84,8 +91,7 @@ function dataComp({d, t, s}) {
         let newDate = loop.setDate(loop.getDate() + 1);
         loop = new Date(newDate);
         dayStart = dayEnd + 1;
-        dayEnd = totalLength < increment ? dayEnd + totalLength : dayEnd + increment;
-        totalLength = totalLength > increment ? totalLength - increment : 0;
+        dayEnd = dayEnd + increment > totalLength ? totalLength : dayEnd + increment;
       }
       t.setTasks(() => {
         localStorage.setItem("tasks", JSON.stringify(newTasks));
@@ -154,8 +160,8 @@ function dataComp({d, t, s}) {
   }
 
   return (
-   <div class="flex flex-col flex-row items-center justify-center">
-    <label>Pick a Category:
+   <div class="flex flex-col flex-row justify-center">
+    <label class="flex flex-auto ">Pick a Category:
       <select onChange={changeCategory}>
         {categories.map((c, index) =>{
           return <option key={index}>
@@ -187,10 +193,11 @@ function dataComp({d, t, s}) {
         })}
       </select>
     </label>
+    <hr class="h-px my-1 bg-gray-300 border-0"/>
     {(studyType == 'Date') ? 
       <div>
-        <label > Pick Start and End:
-          <div class="flex mb-4 items-center"> 
+        <label class="flex flex-col "> Pick Start and End:
+          <div class="text-sm flex mb-4 items-center"> 
             <DatePicker
               selectsStart
               selected={startDate}
@@ -219,10 +226,12 @@ function dataComp({d, t, s}) {
        
      :
       <label>How many per day?
-        <input type="number" id="metric" name="metric" min="1" max={length.length} defaultValue="0" onChange={changeIncrement}/>
+        <input type="number" id="metric" name="metric" min="1" max={length.length} defaultValue="1" onChange={changeIncrement}/>
       </label>  
     }
-      <button class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-grey border-grey hover:bg-grey"onClick={() => createSeder()}>Create Seder</button>
+    <div class="flex flex-row items-center justify-center">
+      <button class="h-12 w-32 border-2 rounded hover:text-blue-500 border-black hover:border-blue-500"onClick={() => createSeder()}>Create Seder</button>
+    </div>
    </div>
     );
 }
