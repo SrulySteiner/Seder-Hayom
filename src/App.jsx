@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Calendar from './Calendar';
+import Header from './Header';
 import Footer from './Footer';
 import Sedarim from './Seder';
 import Tasks from './Tasks'
@@ -15,18 +15,20 @@ function App() {
 
   return (
     <div class="flex flex-col h-screen justify-between">
-      <div class="flex flex-row justify-between">
-        <div class="bg-[#0B3560] h-screen w-48 rounded-br-3xl">
+      <div class='container'>
+        <div class='sidebar'>
           <Sedarim d = {{currentDate, setCurrentDate}}
                   t = {{tasks, setTasks}}/>
         </div>
-        <div class="">
+        <div class='main'>
+          <Header state = {{currentDate, setCurrentDate}}/>
           <main>
             <Tasks d = {{currentDate, setCurrentDate}}
                   t = {{tasks, setTasks}}/>
-          </main>   
+          </main>
+            
         </div>
-          <Calendar state = {{currentDate, setCurrentDate}}/>
+            
       </div>
       <div class="flex flex-row justify-center">
         <Footer/>
