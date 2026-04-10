@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.App{
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.App-header{
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+label {
+  color: black;
+  display: block;
+  margin-bottom: 8px
+}
+
+.popup-content {
+  margin: auto;
+  background: rgb(255, 255, 255);
+  height: 50%;
+  width:fit-content;
+  padding: 10px;
+}
+.popup-arrow {
+  color: rgb(255, 255, 255);
+}
+[role='tooltip'].popup-content {
+  width: 200px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
+}
+
+.popup-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
